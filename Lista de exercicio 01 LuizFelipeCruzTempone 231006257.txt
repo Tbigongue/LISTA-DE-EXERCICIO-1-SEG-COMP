@@ -1,0 +1,163 @@
+
+LISTA DE EXERCICIO 1 FEITA EM PYTHON, SEGURANÇA COMPUTACIONAL
+ALUNO: Luiz Felipe Cruz Tempone        MATRICULA: 231006257
+
+
+**************************************************************************
+EXERCICIO 1, CIFRA POR DESLOCAMENTO
+APENAS DECIFRANDO POR FORÇA BRUTA
+COM PRINT() EXTRAS
+**************************************************************************
+def letnum(texto):
+
+    mapa = {letra: idx for idx, letra in enumerate("abcdefghijklmnopqrstuvwxyz")}
+
+    numeros = [mapa[letra.lower()] for letra in texto if letra.lower() in mapa]
+
+    return numeros
+
+def numlet(numeros):
+
+    alfabeto = "abcdefghijklmnopqrstuvwxyz"
+
+    letras = [alfabeto[num] for num in numeros if 0 <= num < 26]
+
+    return ''.join(letras) 
+
+def chavear():
+    lchaveada = []
+    for i in letnum(texto):
+        newVar = i + chave
+        if i == 25:
+            newVar = (newVar % 25) -1
+        elif newVar > 25:
+            newVar = newVar % 25
+        lchaveada.append(newVar)
+
+    return lchaveada
+
+def removerespacos(texto):
+
+    return texto.replace(" ", "")
+
+espaco = input("Digite uma palavra ou frase: ")
+chave = int(input("Digite uma chave: "))
+texto = removerespacos(espaco)
+
+resultado = numlet(chavear())
+
+
+print("Texto convertido:", resultado)
+
+def desChavear(cripto, tent):
+    lDeschaveada = []
+    for i in cripto:
+        newVar = i  - tent
+        if newVar < 0:
+            newVar = 26 + newVar
+        lDeschaveada.append(newVar)
+
+    return lDeschaveada
+
+
+def brute(cripto):
+    lchaveada = letnum(cripto)
+    l = ""
+    tent = 0
+    while texto != l:
+        l = numlet(desChavear(lchaveada, tent))
+        print(l)
+        tent += 1
+
+    return tent - 1, l
+
+rchave = brute(resultado)
+print("essa é sua chave", rchave)
+
+
+**************************************************************************
+EXERCICIO 2, CIFRA POR TRANSPOSIÇÃO(MESMO METODO DO SLIDE)
+SEM QUEBRA DA CIFRA NO CODIGO
+COM PRINT() EXTRAS
+**************************************************************************
+
+
+def letnum(texto):
+
+    mapa = {letra: idx for idx, letra in enumerate("abcdefghijklmnopqrstuvwxyz")}
+
+    numeros = [mapa[letra.lower()] for letra in texto if letra.lower() in mapa]
+
+    return numeros
+    
+texto = input("Digite uma palavra ou frase: ")
+chave = input("Digite uma chave: ")
+
+lenTexto = len(texto)
+colunas = len(chave)
+
+if lenTexto % colunas != 0:
+    texto = texto + (lenTexto % colunas)*"1"
+    
+    
+colunas = len(chave)
+lenTexto = len(texto)
+chavenum = letnum(chave)
+
+
+if lenTexto // colunas != lenTexto / colunas:
+    linhas = 1 + (lenTexto // colunas)
+
+else:
+    linhas = int(lenTexto / colunas)
+
+
+#fazendo a matriz
+matriz = []
+for i in range(linhas):
+    matriz.append([])
+
+    
+contador = 0
+for i in range(linhas):
+    for u in range(colunas):
+        matriz[i].append(texto[contador])
+        contador = contador + 1
+
+#criptografando
+def posiord(lista):
+
+    lista_ordenada = sorted(enumerate(lista), key=lambda x: x[1])
+    
+    posicoes = [0] * len(lista)
+    
+    for ordem, (indice, _) in enumerate(lista_ordenada):
+        posicoes[indice] = ordem + 1  
+
+    return posicoes
+
+result = posiord(chavenum)
+
+lchaveada = []
+for i in range(colunas):
+    for o in range(colunas):
+        if i+1 == result[o]:
+            for u in range(linhas):
+                lchaveada.append(matriz[u][o])
+
+strChaveada = "".join(lchaveada)
+
+
+print(result)
+print(matriz)
+print(lenTexto, colunas)
+print(linhas)
+print(letnum(chave))
+
+
+print(lchaveada)
+print(strChaveada)
+
+
+
+
